@@ -1,9 +1,11 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -77,6 +79,29 @@ public class RequestParamController {
     public String requestParamMap(@RequestParam Map<String, Object> paramMap) {
         // Integer는 null이 가능하지만, int는 null 불가능
         log.info("username = {}, age = {}", paramMap.get("username"), paramMap.get("age"));
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+        // @RequestParam String username, @RequestParam int age
+        //        HelloData helloData = new HelloData();
+//        helloData.setUsername(username);
+//        helloData.setAge(age);
+/**
+ * ModelAttribute 를 통해서 RequestParam으로 가져올 정보들을 한번에 다 땡겨올 수 있음
+ */
+        log.info("username = {}, age = {}", helloData.getUsername(), helloData.getAge());
+
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2( HelloData helloData) { // ModelAttribute 생략 가능
+        log.info("username = {}, age = {}", helloData.getUsername(), helloData.getAge());
+
         return "ok";
     }
 }
